@@ -39,25 +39,31 @@
 #define block_fopen_quietly(_result, _path, _mode, _block)                     \
   block_fopen(_result, _path, _mode, _block, block_empty())
 
+#ifndef __STRICT_ANSI__
+
 #define block_fdopen(_result, _fd, _mode, _sblock, _fblock) {                  \
   FILE *_result = fdopen((_fd), (_mode));                                      \
   block_if((_result == NULL), _fblock, _sblock)                                \
 }
 
-#ifndef __STRICT_ANSI__
-
 #define block_fdopen_quietly(_result, _fd, _mode, _block)                      \
   block_fdopen(_result, _fd, _mode, _block, block_empty())
 
-#define block_freopen(_result, _path, _mode, _stream, _sblock, _fblock) {      \
-  FILE *_result = freopen((_path), (_mode), (_stream));                        \
-  block_if((_result == NULL), _fblock, _sblock)                                \
-}
-
 #endif
 
-#define block_freopen_quietly(_result, _path, _mode, _stream, _block)          \
-  block_freopen(_result, _path, _mode, _stream, _block, block_empty())
+#define block_freopen(_stream, _path, _mode, _sblock, _fblock) {               \
+  FILE *__blk_stream = (FILE *) (_stream);                                     \
+  block_if((__blk_stream != NULL),                                             \
+    block_if((__blk_stream != freopen((_path), (_mode), (__blk_stream))),      \
+      _fblock,                                                                 \
+      _sblock                                                                  \
+    ),                                                                         \
+    _fblock                                                                    \
+  )                                                                            \
+}
+
+#define block_freopen_quietly(_stream, _path, _mode, _block)                   \
+  block_freopen(_stream, _path, _mode, _block, block_empty())
 
 #define block_fseek(_stream, _offset, _whence, _sblock, _fblock)               \
   block_if((fseek((_stream), (_offset), (_whence)) != -1), _sblock, _fblock)

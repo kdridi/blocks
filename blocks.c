@@ -130,6 +130,30 @@ int check_block_fdopen_quietly(int argc, char *argv[], int value) {
 
 #endif
 
+
+int check_block_freopen(int argc, char *argv[], int value) {
+  int result = value - argc;
+  block_file_with_path(file, argv[0], "rb", {
+    block_freopen(file, argv[0], "rb", {
+      result += argc;
+    }, {
+      result -= argc;
+      block_warn("check_block_freopen: can't reach this part 01!");
+    })
+  })
+  return result;
+}
+
+int check_block_freopen_quietly(int argc, char *argv[], int value) {
+  int result = value - argc;
+  block_file_with_path(file, argv[0], "rb", {
+    block_freopen_quietly(file, argv[0], "rb", {
+      result += argc;
+    })
+  })
+  return result;
+}
+
 int main(int argc, char *argv[]) {
   int result = EXIT_SUCCESS;
 
@@ -165,6 +189,8 @@ int main(int argc, char *argv[]) {
   run(check_block_fdopen);
   run(check_block_fdopen_quietly);
 #endif
+  run(check_block_freopen);
+  run(check_block_freopen_quietly);
 
 #undef run
 

@@ -14,8 +14,8 @@
 #include "blocks/stdlib.h"
 
 #define block_file_with_path(_result, _path, _mode, _block)                    \
-  block_fopen_quietly((_result), (_path), (_mode),                             \
-    block_compose(_block, block_fclose_quietly((_result)))                     \
+  block_fopen_quietly(_result, _path, _mode,                                   \
+    block_compose(_block, block_fclose_quietly(_result, block_empty()))        \
   )
 
 #define block_file_length(_result, _file, _block)                              \

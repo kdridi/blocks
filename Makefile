@@ -1,4 +1,4 @@
-CFLAGS	= -O2 -g -Wall -fmessage-length=0 -Iinclude -std=c99
+CFLAGS	= -O0 -g -Wall -fmessage-length=0 -Iinclude -std=c99
 OBJS	= blocks.o
 LIBS	= 
 TARGET	= blocks
