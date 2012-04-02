@@ -37,8 +37,12 @@
   return _result;                                                              \
 }
 
-#define block_warning(_message) {                                              \
+#define block_warn(_message) {                                                 \
   fprintf(stderr, "WARN[%s][%d]: %s\n", __FILE__, __LINE__, (_message));       \
+}
+
+#define block_info(_message) {                                                 \
+  fprintf(stderr, "INFO[%s][%d]: %s\n", __FILE__, __LINE__, (_message));       \
 }
 
 #endif /* BLOCKS_BLOCKS_ */

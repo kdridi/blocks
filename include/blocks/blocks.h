@@ -53,10 +53,4 @@
   )                                                                            \
 }
 
-block_if_true((_result##_data != NULL), {                                      \
-    _block                                                                     \
-    block_free(_result##_data, block_assign(_result##_length, 0))              \
-    })                                                                         \
-}
-
 #endif /* BLOCKS_H */
