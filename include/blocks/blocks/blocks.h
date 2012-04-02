@@ -17,18 +17,15 @@
   _block2                                                                      \
 }
 
-#define block_if(_condition, _true_block, _false_block) {                      \
-  if((_condition))                                                             \
-    _true_block                                                                \
+#define block_if(_condition, _tblock, _fblock) {                               \
+  if(_condition)                                                               \
+    _tblock                                                                    \
   else                                                                         \
-    _false_block                                                               \
+    _fblock                                                                    \
 }
 
 #define block_if_true(_condition, _block)                                      \
-  block_if((_condition),                                                       \
-    _block,                                                                    \
-    block_empty()                                                              \
-  )
+  block_if(_condition, _block, block_empty())
 
 #define block_assign(_variable, _value) {                                      \
   (_variable) = (_value);                                                      \
