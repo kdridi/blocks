@@ -154,8 +154,21 @@ int check_block_freopen_quietly(int argc, char *argv[], int value) {
   return result;
 }
 
+int check_block_file_length(int argc, char *argv[], int value) {
+  int file_length = atoi(argv[1]);
+  int result = value - file_length;
+  block_file_with_path(file, argv[0], "rb", {
+    block_file_length(length, file, {
+      result += length;
+    })
+  })
+  return result;
+}
+
 int main(int argc, char *argv[]) {
   int result = EXIT_SUCCESS;
+
+  printf("size: %d\n", atoi(argv[1]));
 
 #define run(function) {                                                        \
   int local_result = EXIT_SUCCESS;                                             \
@@ -191,6 +204,7 @@ int main(int argc, char *argv[]) {
 #endif
   run(check_block_freopen);
   run(check_block_freopen_quietly);
+  run(check_block_file_length);
 
 #undef run
 
