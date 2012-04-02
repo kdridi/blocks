@@ -44,6 +44,8 @@
   block_if((_result == NULL), _fblock, _sblock)                                \
 }
 
+#ifndef __STRICT_ANSI__
+
 #define block_fdopen_quietly(_result, _fd, _mode, _block)                      \
   block_fdopen(_result, _fd, _mode, _block, block_empty())
 
@@ -51,6 +53,8 @@
   FILE *_result = freopen((_path), (_mode), (_stream));                        \
   block_if((_result == NULL), _fblock, _sblock)                                \
 }
+
+#endif
 
 #define block_freopen_quietly(_result, _path, _mode, _stream, _block)          \
   block_freopen(_result, _path, _mode, _stream, _block, block_empty())

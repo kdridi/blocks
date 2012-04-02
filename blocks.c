@@ -107,6 +107,29 @@ int check_block_fopen_quietly(int argc, char *argv[], int value) {
   return result;
 }
 
+#ifndef __STRICT_ANSI__
+
+int check_block_fdopen(int argc, char *argv[], int value) {
+  int result = value - argc;
+  block_fdopen(file, 0, "rb", {
+    result -= argc;
+  }, {
+    result += argc;
+  });
+  return result;
+}
+
+int check_block_fdopen_quietly(int argc, char *argv[], int value) {
+  int result = value - argc;
+  block_fdopen_quietly(file, 0, "rb", {
+    result += argc;
+    block_warn("check_block_fdopen_quietly: can't reach this part!");
+  });
+  return result + argc;
+}
+
+#endif
+
 int main(int argc, char *argv[]) {
   int result = EXIT_SUCCESS;
 
@@ -138,6 +161,10 @@ int main(int argc, char *argv[]) {
   run(check_block_fclose_quietly);
   run(check_block_fopen);
   run(check_block_fopen_quietly);
+#ifndef __STRICT_ANSI__
+  run(check_block_fdopen);
+  run(check_block_fdopen_quietly);
+#endif
 
 #undef run
 

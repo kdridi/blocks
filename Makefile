@@ -17,5 +17,5 @@ clean:
 test:
 	clear
 	$(MAKE) clean all
-	valgrind ./$(TARGET) && echo "Success"'!'
+	valgrind --leak-check=full ./$(TARGET) && echo "Success"'!'
 	
