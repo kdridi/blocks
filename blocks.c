@@ -10,18 +10,18 @@
 #include <stdlib.h>
 #include <blocks/blocks.h>
 
-int check_block_empty(int value) {
+int check_block_empty(int argc, char *argv[], int value) {
   block_empty();
   return value;
 }
 
-int check_block_compose(int value) {
+int check_block_compose(int argc, char *argv[], int value) {
   int result = value - 2;
   block_compose( {result++;}, {result++;});
   return result;
 }
 
-int check_block_if(int value) {
+int check_block_if(int argc, char *argv[], int value) {
   int result = 0;
   int is_even = value % 2;
   if (is_even) {
@@ -33,7 +33,7 @@ int check_block_if(int value) {
   return result;
 }
 
-int check_block_if_true(int value) {
+int check_block_if_true(int argc, char *argv[], int value) {
   int result = 0;
   int is_even = value % 2;
   if (is_even) {
@@ -45,20 +45,20 @@ int check_block_if_true(int value) {
   return result + 1;
 }
 
-int check_block_assign(int value) {
+int check_block_assign(int argc, char *argv[], int value) {
   int result = -1;
-  block_assign(result, check_block_if_true(value));
+  block_assign(result, check_block_if_true(argc, argv, value));
   return result;
 }
 
-int check_block_return(int value) {
+int check_block_return(int argc, char *argv[], int value) {
   int offset = 10;
-  block_return(int, result, check_block_assign(value - offset), {
-    result += check_block_if_true(offset);
+  block_return(int, result, check_block_assign(argc, argv, value - offset), {
+    result += check_block_if_true(argc, argv, offset);
   });
 }
 
-int check_block_fclose(int value) {
+int check_block_fclose(int argc, char *argv[], int value) {
   int offset = 5;
   int result = value - offset;
   FILE *file = NULL;
@@ -71,7 +71,7 @@ int check_block_fclose(int value) {
   return result;
 }
 
-int check_block_fclose_quietly(int value) {
+int check_block_fclose_quietly(int argc, char *argv[], int value) {
   int offset = 5;
   int result = value;
   FILE *file = NULL;
@@ -82,7 +82,7 @@ int check_block_fclose_quietly(int value) {
   return result;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
   int result = EXIT_SUCCESS;
 
 #define run(function) {                                                        \
@@ -90,7 +90,7 @@ int main(void) {
   for (int i = __LINE__ - 10; i < __LINE__; i++) {                             \
     int expected = i + 1;                                                      \
     int actual = i;                                                            \
-    block_if_true((expected != function(++actual)), {                          \
+    block_if_true((expected != function(argc, argv, ++actual)), {              \
       block_warn(">>>>>>  Failure: " #function);                               \
       local_result = EXIT_FAILURE;                                             \
       break;                                                                   \
