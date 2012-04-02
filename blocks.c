@@ -71,6 +71,17 @@ int check_block_fclose(int value) {
   return result;
 }
 
+int check_block_fclose_quietly(int value) {
+  int offset = 5;
+  int result = value;
+  FILE *file = NULL;
+  FILE **file_ptr = &file;
+  block_fclose_quietly(*file_ptr, {
+    result -= offset;
+  });
+  return result;
+}
+
 int main(void) {
   int result = EXIT_SUCCESS;
 
@@ -99,6 +110,7 @@ int main(void) {
   run(check_block_assign);
   run(check_block_return);
   run(check_block_fclose);
+  run(check_block_fclose_quietly);
 
 #undef run
 
