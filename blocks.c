@@ -82,6 +82,16 @@ int check_block_fclose_quietly(int argc, char *argv[], int value) {
   return result;
 }
 
+int check_block_fopen(int argc, char *argv[], int value) {
+  int result = value - argc;
+  block_fopen(file, NULL, "rb", {
+    result -= argc;
+  }, {
+    result += argc;
+  });
+  return result;
+}
+
 int main(int argc, char *argv[]) {
   int result = EXIT_SUCCESS;
 
@@ -111,6 +121,7 @@ int main(int argc, char *argv[]) {
   run(check_block_return);
   run(check_block_fclose);
   run(check_block_fclose_quietly);
+  run(check_block_fopen);
 
 #undef run
 
