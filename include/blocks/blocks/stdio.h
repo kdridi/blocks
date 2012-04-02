@@ -13,8 +13,11 @@
 
 #define block_fclose(_file, _sblock, _fblock) {                                \
   FILE **__block_fclose_file = (FILE **) (&(_file));                           \
-  block_if((fclose(*__block_fclose_file) == 0),                                \
-    block_compose(block_assign(*__block_fclose_file, NULL), _sblock),          \
+  block_if((*__block_fclose_file != NULL),                                     \
+    block_if((fclose(*__block_fclose_file) == 0),                              \
+      block_compose(block_assign(*__block_fclose_file, NULL), _sblock),        \
+      _fblock                                                                  \
+    ),                                                                         \
     _fblock                                                                    \
   )                                                                            \
 }
