@@ -17,5 +17,5 @@ clean:
 test:
 	clear
 	$(MAKE) clean all
-	./$(TARGET) && echo "Success"'!'
+	valgrind ./$(TARGET) && echo "Success"'!'
 	

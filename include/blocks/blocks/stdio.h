@@ -26,8 +26,14 @@
   block_fclose(_file, _block, block_empty())
 
 #define block_fopen(_result, _path, _mode, _sblock, _fblock) {                 \
-  FILE *_result = fopen((_path), (_mode));                                     \
-  block_if((_result == NULL), _fblock, _sblock)                                \
+  const char *__##_result##__path = (const char *) (_path);                    \
+  block_if((__##_result##__path != NULL),                                      \
+    {                                                                          \
+      FILE *_result = fopen((__##_result##__path), (_mode));                   \
+      block_if((_result == NULL), _fblock, _sblock)                            \
+    },                                                                         \
+    _fblock                                                                    \
+  )                                                                            \
 }
 
 #define block_fopen_quietly(_result, _path, _mode, _block)                     \
